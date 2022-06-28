@@ -12,15 +12,15 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using BizUnit.Core.TestBuilder;
+using BizUnit.TestSteps.Common;
+using Microsoft.RuleEngine;
 using System;
+using System.Collections.ObjectModel;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Xml;
-using Microsoft.RuleEngine;
-using System.Data.SqlClient;
-using System.Data;
-using System.Collections.ObjectModel;
-using BizUnit.TestSteps.Common;
-using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.BizTalk.Bre
 {

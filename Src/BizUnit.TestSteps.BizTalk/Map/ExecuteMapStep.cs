@@ -12,12 +12,12 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
-using System;
-using System.IO;
-using System.Collections.ObjectModel;
-using BizUnit.Common;
+using BizUnit.Core.Common;
+using BizUnit.Core.TestBuilder;
 using BizUnit.TestSteps.Common;
-using BizUnit.Xaml;
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
 
 namespace BizUnit.TestSteps.BizTalk.Map
 {

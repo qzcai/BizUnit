@@ -12,50 +12,50 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using BizUnit.Core.TestBuilder;
 using System;
 using System.Management;
-using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.BizTalk.Orchestration
 {
-	/// <summary>
-	/// The OrchestrationConductorStep may be used to stop/start an orchestration.
-	/// </summary>
-	/// 
-	/// <remarks>
-	/// The following shows an example of the Xml representation of this test step.
-	/// 
-	/// <code escaped="true">
+    /// <summary>
+    /// The OrchestrationConductorStep may be used to stop/start an orchestration.
+    /// </summary>
+    /// 
+    /// <remarks>
+    /// The following shows an example of the Xml representation of this test step.
+    /// 
+    /// <code escaped="true">
     /// <TestStep assemblyPath="" typeName="BizUnit.BizTalkSteps.OrchestrationConductorStep, BizUnit.BizTalkSteps, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
-	///		<DelayForCompletion>5</DelayForCompletion> <!-- Optional, seconds to delay for this step to complete -->
-	///		<AssemblyName>BizUnitTest.Process</AssemblyName>
-	///		<OrchestrationName>BizUnitTest.Process.SubmitToLedger</OrchestrationName>
-	///		<Action>Start</Action>
-	/// </TestStep>
-	/// </code>
-	///	<list type="table">
-	///		<listheader>
-	///			<term>Tag</term>
-	///			<description>Description</description>
-	///		</listheader>
-	///		<item>
-	///			<term>DelayForCompletion</term>
-	///			<description>The delay before executing the step <para>(optional)</para></description>
-	///		</item>
-	///		<item>
-	///			<term>AssemblyName</term>
-	///			<description>The name of the assembly containing the orchestration, e.g. BizUnitTest.Process</description>
-	///		</item>
-	///		<item>
-	///			<term>OrchestrationName</term>
-	///			<description>The name of the orchestration to start/stop</description>
-	///		</item>
-	///		<item>
-	///			<term>Action</term>
-	///			<description>Start|Stop</description>
-	///		</item>
-	///	</list>
-	///	</remarks>	
+    ///		<DelayForCompletion>5</DelayForCompletion> <!-- Optional, seconds to delay for this step to complete -->
+    ///		<AssemblyName>BizUnitTest.Process</AssemblyName>
+    ///		<OrchestrationName>BizUnitTest.Process.SubmitToLedger</OrchestrationName>
+    ///		<Action>Start</Action>
+    /// </TestStep>
+    /// </code>
+    ///	<list type="table">
+    ///		<listheader>
+    ///			<term>Tag</term>
+    ///			<description>Description</description>
+    ///		</listheader>
+    ///		<item>
+    ///			<term>DelayForCompletion</term>
+    ///			<description>The delay before executing the step <para>(optional)</para></description>
+    ///		</item>
+    ///		<item>
+    ///			<term>AssemblyName</term>
+    ///			<description>The name of the assembly containing the orchestration, e.g. BizUnitTest.Process</description>
+    ///		</item>
+    ///		<item>
+    ///			<term>OrchestrationName</term>
+    ///			<description>The name of the orchestration to start/stop</description>
+    ///		</item>
+    ///		<item>
+    ///			<term>Action</term>
+    ///			<description>Start|Stop</description>
+    ///		</item>
+    ///	</list>
+    ///	</remarks>	
 
     public class OrchestrationConductorStep : TestStepBase
 	{

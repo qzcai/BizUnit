@@ -12,7 +12,7 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
-using BizUnit.Xaml;
+using BizUnit.Core.TestBuilder;
 
 namespace BizUnit.TestSteps.BizTalk.Host
 {

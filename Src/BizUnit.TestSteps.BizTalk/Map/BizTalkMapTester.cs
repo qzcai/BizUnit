@@ -12,13 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using BizUnit.Core.Common;
+using Microsoft.XLANGs.BaseTypes;
 using System;
 using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.XPath;
-using Microsoft.XLANGs.BaseTypes;
-using BizUnit.Common;
 
 namespace BizUnit.TestSteps.BizTalk.Map
 {
@@ -73,15 +73,9 @@ namespace BizUnit.TestSteps.BizTalk.Map
             using (var inReader = new StreamReader(source))
             {
                 var xpathdoc = new XPathDocument(inReader);
-                using (var outReader = Map.Transform.Transform(xpathdoc, Map.TransformArgs))
+                using (var writer = XmlWriter.Create(destination, BizTalkMapTester.WriterSettings))
                 {
-                    var xDoc = new XmlDocument();
-                    xDoc.Load(outReader);
-
-                    using (var writer = XmlWriter.Create(destination, BizTalkMapTester.WriterSettings))
-                    {
-                        xDoc.Save(writer);
-                    }
+                    Map.Transform.Transform(xpathdoc, Map.TransformArgs, writer);
                 }
             }
         }

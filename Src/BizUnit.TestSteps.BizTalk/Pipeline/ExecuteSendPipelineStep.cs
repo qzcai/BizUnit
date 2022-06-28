@@ -12,14 +12,14 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
-using System;
-using System.IO;
-using System.Collections.Generic;
-using Winterdom.BizTalk.PipelineTesting;
-using System.Collections.ObjectModel;
-using BizUnit.Common;
+using BizUnit.Core.Common;
+using BizUnit.Core.TestBuilder;
 using BizUnit.TestSteps.BizTalk.Common;
-using BizUnit.Xaml;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using Winterdom.BizTalk.PipelineTesting;
 
 namespace BizUnit.TestSteps.BizTalk.Pipeline
 {

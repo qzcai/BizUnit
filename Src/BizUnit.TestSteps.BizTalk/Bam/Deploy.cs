@@ -12,8 +12,7 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
-using System.Diagnostics;
-using BizUnit.Xaml;
+using BizUnit.Core.TestBuilder;
 
 namespace BizUnit.TestSteps.BizTalk.Bam
 {
@@ -60,11 +59,11 @@ namespace BizUnit.TestSteps.BizTalk.Bam
 			sb.Append('"');
 			sb.Append(BamDefinitionXmlFilePath);
 			sb.Append('"');
-			
-			var bamProcess = new Process
-			                     {
-			                         StartInfo = {WorkingDirectory = TrackingFolderPath, FileName = "bm.exe"}
-			                     };
+
+            var bamProcess = new System.Diagnostics.Process
+            {
+                StartInfo = { WorkingDirectory = TrackingFolderPath, FileName = "bm.exe" }
+            };
 
             if (Action == BamDeploymentAction.Deploy)
             {
