@@ -119,6 +119,7 @@
     <Compile Include="..\..\Common\AssemblyVersionInfo.cs">
       <Link>Properties\AssemblyVersionInfo.cs</Link>
     </Compile>
+    <Compile Include="EventLog\EventLogClearStep.cs" />
     <Compile Include="EventLog\EventLogSaveStep.cs" />
     <Compile Include="PerfMon\PerfMonCounterMonitorStep.cs" />
     <Compile Include="Process\ExecuteCommandStep.cs" />
