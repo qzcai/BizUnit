@@ -98,6 +98,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -118,6 +119,7 @@
     <Compile Include="..\..\Common\AssemblyVersionInfo.cs">
       <Link>Properties\AssemblyVersionInfo.cs</Link>
     </Compile>
+    <Compile Include="EventLog\EventLogSaveStep.cs" />
     <Compile Include="PerfMon\PerfMonCounterMonitorStep.cs" />
     <Compile Include="Process\ExecuteCommandStep.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
