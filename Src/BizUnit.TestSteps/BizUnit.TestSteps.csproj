@@ -118,6 +118,7 @@
     <Compile Include="..\..\Common\AssemblyVersionInfo.cs">
       <Link>Properties\AssemblyVersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Process\ExecuteCommandStep.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\StreamHelper.cs" />
     <Compile Include="DataLoaders\StringDataLoader.cs" />
