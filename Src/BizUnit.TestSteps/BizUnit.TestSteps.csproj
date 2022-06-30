@@ -130,6 +130,7 @@
     <Compile Include="Process\ProcessStartStep.cs" />
     <Compile Include="Process\ProcessWrapper.cs" />
     <Compile Include="Sql\DbCellToValidate.cs" />
+    <Compile Include="Sql\DBExecuteNonQueryStep.cs" />
     <Compile Include="Sql\DbRowToValidate.cs" />
     <Compile Include="File\CreateDirectoryStep.cs" />
     <Compile Include="DataLoaders\File\FileDataLoader.cs" />
