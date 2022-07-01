@@ -13,43 +13,44 @@
 //---------------------------------------------------------------------
 
 using BizUnit.Core.TestBuilder;
+using System;
+using System.Linq;
+using System.Management;
+using System.Text;
 
 namespace BizUnit.TestSteps.BizTalk.Host
 {
-	using System;
-	using System.Management;
-
     /// <summary>
-	/// The HostConductorStep test step maybe used to start or stop a BizTalk host
-	/// </summary>
-	/// 
-	/// <remarks>
-	/// The following shows an example of the Xml representation of this test step.
-	/// 
-	/// <code escaped="true">
+    /// The HostConductorStep test step maybe used to start or stop a BizTalk host
+    /// </summary>
+    /// 
+    /// <remarks>
+    /// The following shows an example of the Xml representation of this test step.
+    /// 
+    /// <code escaped="true">
     ///	<TestStep assemblyPath="" typeName="BizUnit.BizTalkSteps.HostConductorStep, BizUnit.BizTalkSteps, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
-	///		<Action>start|stop</Action>
+    ///		<Action>start|stop</Action>
     ///		<HostInstanceName>BizTalkServerApplication</HostInstanceName>
     ///		<Server>RecvHost</Server>
     ///     <Logon>zeus\\administrator</Logon>
     ///     <PassWord>appollo*1</PassWord>
     ///     <GrantLogOnAsService>true</GrantLogOnAsService>
-	///	</TestStep>
-	///	</code>
-	///	
-	///	<list type="table">
-	///		<listheader>
-	///			<term>Tag</term>
-	///			<description>Description</description>
-	///		</listheader>
-	///		<item>
-	///			<term>HostInstanceName</term>
-	///			<description>The name of the host instance to start|stop</description>
-	///		</item>
-	///		<item>
-	///			<term>Action</term>
+    ///	</TestStep>
+    ///	</code>
+    ///	
+    ///	<list type="table">
+    ///		<listheader>
+    ///			<term>Tag</term>
+    ///			<description>Description</description>
+    ///		</listheader>
+    ///		<item>
+    ///			<term>HostInstanceName</term>
+    ///			<description>The name of the host instance to start|stop</description>
+    ///		</item>
+    ///		<item>
+    ///			<term>Action</term>
     ///			<description>A value of start or stop<para>(start|stop)</para></description>
-	///		</item>
+    ///		</item>
     ///		<item>
     ///			<term>Server</term>
     ///			<description>The server(s) where the Biztalk host instance is running, a commer delimeted list of servers may be supplied (optional)</description>
@@ -67,7 +68,7 @@ namespace BizUnit.TestSteps.BizTalk.Host
     ///			<description>Boolean determining whether the 'Log On As Service' privilege should be automatically granted to the specified logon user or not. This flag only has effect when the HostType property is set to In-process</description>
     ///		</item>
     ///	</list>
-	///	</remarks>	
+    ///	</remarks>	
     public class HostConductorStep : TestStepBase
 	{
 	    private string _action;
@@ -118,42 +119,46 @@ namespace BizUnit.TestSteps.BizTalk.Host
             var listofServers = _servers.Split(',');
             foreach (var server in listofServers)
             {
-                var mo = GetHostInstanceWmiObject(server, _hostName);
+                var mos = GetHostInstanceWmiObject(server, _hostName);
 
-                using (mo)
+                foreach (ManagementObject mo in mos)
                 {
-                    if (_action.ToLower() == "start")
+                    using (mo)
                     {
-                        if (!string.IsNullOrEmpty(_logon))
+                        var hostName = mo.GetPropertyValue("HostName");
+                        if (_action.ToLower() == "start")
                         {
-                            var creds = new object[3];
-                            creds[0] = _logon;
-                            creds[1] = _passWord;
-                            creds[2] = _grantLogOnAsService;
-                            mo.InvokeMethod("Install", creds);
+                            if (!string.IsNullOrEmpty(_logon))
+                            {
+                                var creds = new object[3];
+                                creds[0] = _logon;
+                                creds[1] = _passWord;
+                                creds[2] = _grantLogOnAsService;
+                                mo.InvokeMethod("Install", creds);
+                            }
+
+                            if (mo["ServiceState"].ToString() == "1")
+                            {
+                                mo.InvokeMethod("Start", null);
+                                context.LogInfo($"BizTalk Host {hostName} Started.");
+                            }
+                            else
+                            {
+                                context.LogInfo($"BizTalk Host {hostName} is Started.");
+                            }
                         }
 
-                        if (mo["ServiceState"].ToString() == "1")
+                        if (_action.ToLower() == "stop")
                         {
-                            mo.InvokeMethod("Start", null);
-                            context.LogInfo("BizTalk Host Started.");
-                        }
-                        else
-                        {
-                            context.LogInfo("BizTalk Host is Started.");
-                        }
-                    }
-
-                    if (_action.ToLower() == "stop")
-                    {
-                        if (mo["ServiceState"].ToString() != "0")
-                        {
-                            mo.InvokeMethod("Stop", null);
-                            context.LogInfo("BizTalk Host Stopped.");
-                        }
-                        else
-                        {
-                            context.LogInfo("BizTalk Host is Stopped.");
+                            if (mo["ServiceState"].ToString() != "0")
+                            {
+                                mo.InvokeMethod("Stop", null);
+                                context.LogInfo($"BizTalk Host {hostName} Stopped.");
+                            }
+                            else
+                            {
+                                context.LogInfo($"BizTalk Host {hostName} is Stopped.");
+                            }
                         }
                     }
                 }
@@ -186,7 +191,7 @@ namespace BizUnit.TestSteps.BizTalk.Host
             }
         }
         
-        private static ManagementObject GetHostInstanceWmiObject(string server, string hostName)
+        private static ManagementObjectCollection GetHostInstanceWmiObject(string server, string hostName)
 		{
             // 2 represents an isolated host and 1 represents an in-process hosts, only an in-process 
             // can be stopped...
@@ -203,29 +208,23 @@ namespace BizUnit.TestSteps.BizTalk.Host
             ManagementScope scope = null == server ? new ManagementScope("root\\MicrosoftBizTalkServer", options) : new ManagementScope("\\\\" + server + "\\root\\MicrosoftBizTalkServer", options);
 
 			searcher.Scope = scope;
-		
-			// Build a Query to enumerate the MSBTS_hostInstance instances 
-			var query = new SelectQuery
-			                {
-			                    QueryString =
-			                        String.Format("SELECT * FROM MSBTS_HostInstance where HostName='" + hostName +
-			                                      "' AND HostType=" + hostType.ToString())
-			                };
+
+            // Build a Query to enumerate the MSBTS_hostInstance instances 
+            var sb = new StringBuilder();
+            sb.Append($"SELECT * FROM MSBTS_HostInstance WHERE HostType={hostType}");
+            if (hostName != "*")
+            {
+                sb.Append(" AND (");
+                sb.Append(string.Join(" OR ", hostName.Split(',').Select(t => $"HostName = '{t.Trim()}'")));
+                sb.Append(")");
+            }
+			var query = new SelectQuery { QueryString = sb.ToString() };
 
             // Set the query for the searcher.
 			searcher.Query = query;
 
 			// Execute the query and determine if any results were obtained.
-			var queryCol = searcher.Get();			
-			var me = queryCol.GetEnumerator();
-			me.Reset();
-
-			if ( me.MoveNext() )
-			{
-				return (ManagementObject)me.Current;
-			}
-
-            throw new ApplicationException(string.Format("The WMI object for the Host Instance:{0} could not be retrieved.", hostName ));
+			return searcher.Get();			
 		}
 	}
 }
